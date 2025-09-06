@@ -10,5 +10,10 @@ __pycache__/
 *.zip
 *.DS_Store
 .vscode/
-transcriptions/
+
 ffmpeg-master-latest-win64-gpl-shared/
+venv/
+#folder
+sorties/
+uploads/
+transcriptions/
