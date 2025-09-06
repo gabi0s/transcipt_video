@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.wav
+*.mp4
+*.mkv
+*.mov
+*.zip
+*.DS_Store
+.vscode/
+transcriptions/
+ffmpeg-master-latest-win64-gpl-shared/
