@@ -1,0 +1,7 @@
+Flask>=2.3.0
+faster-whisper>=0.10.0
+ffmpeg-python>=0.2.0
+yt-dlp>=2023.1.0
+tqdm>=4.60.0
+yt-dlp
+
