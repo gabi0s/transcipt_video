@@ -1,10 +1,10 @@
 #  Transcripteur Vidéo/Audio
 
 ## Description
-Un outil puissant pour transcrire des vidéos et fichiers audio en texte, avec support des fichiers locaux et des URLs YouTube. Génère des transcriptions en format TXT et/ou SRT.
+Un outil puissant pour transcrire des vidéos et fichiers audio en texte, avec support des fichiers locaux. Génère des transcriptions en format TXT et/ou SRT.
 
 ## Fonctionnalités
-*   **🎯 Support multiple** : Fichiers locaux (MP4, MKV, MOV, AVI, MP3, WAV, M4A, FLAC, WEBM) et URLs YouTube
+*   **🎯 Support multiple** : Fichiers locaux (MP4, MKV, MOV, AVI, MP3, WAV, M4A, FLAC, WEBM)
 *   **🧠 Modèles Whisper** : Plusieurs modèles de différentes tailles (tiny, base, small, medium, large-v3)
 *   **🌍 Multilingue** : Détection automatique de langue ou sélection manuelle
 *   **⚡ Options avancées** : Détection d'activité vocale (VAD), choix du format de sortie
@@ -15,7 +15,7 @@ Un outil puissant pour transcrire des vidéos et fichiers audio en texte, avec s
 
 ### Prérequis
 *   Python 3.8+
-*   FFmpeg (inclus dans le projet pour Windows)
+*   FFmpeg (à installer et à mettre /bin dans les variables d'environement) (https://www.ffmpeg.org/download.html)
 
 ### Dépendances
 ```bash
@@ -38,6 +38,8 @@ transcripteur-app/
 client
 ├── templates/
 │   └── index.html        # Interface utilisateur
+├── templates/
+│   └── static.css        # Feuille de style
 ├── uploads/              # Fichiers uploadés (créé automatiquement)
 └── transcriptions/       # Résultats de transcription (créé automatiquement)
 ```
