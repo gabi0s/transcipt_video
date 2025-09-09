@@ -44,6 +44,25 @@
     
     <input id="fileInput" class="hidden" type="file" accept="audio/*,video/*" />
 
+    <!-- Section de confirmation avec le fichier sélectionné -->
+    <div id="confirmSection" class="confirm-section hidden">
+      <div class="selected-file">
+        <div class="file-icon">🎵</div>
+        <div class="file-info">
+          <div id="fileName" class="file-name">Nom du fichier</div>
+          <div id="fileSize" class="file-size">Taille du fichier</div>
+        </div>
+      </div>
+      <div class="confirm-buttons">
+        <button id="transcribeBtn" class="transcribe-btn">
+          🚀 Lancer la transcription
+        </button>
+        <button id="cancelBtn" class="cancel-btn">
+          ❌ Annuler
+        </button>
+      </div>
+    </div>
+
     <div id="progressWrap" class="progress-section hidden">
       <p id="statusText" class="status-text">En attente...</p>
       <div class="progress-bar">
@@ -60,11 +79,18 @@
 <script>
 const drop = document.getElementById('drop');
 const fileInput = document.getElementById('fileInput');
+const confirmSection = document.getElementById('confirmSection');
 const progressWrap = document.getElementById('progressWrap');
 const fill = document.getElementById('fill');
 const statusText = document.getElementById('statusText');
 const dlLink = document.getElementById('dlLink');
 const downloadSection = document.getElementById('download');
+const transcribeBtn = document.getElementById('transcribeBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const fileName = document.getElementById('fileName');
+const fileSize = document.getElementById('fileSize');
+
+let selectedFile = null;
 
 // Gestion des clics et drag & drop
 drop.addEventListener('click', () => fileInput.click());
@@ -83,16 +109,62 @@ drop.addEventListener('drop', (e) => {
   e.preventDefault();
   drop.classList.remove('dragover');
   const file = e.dataTransfer.files[0];
-  if (file) uploadFile(file);
+  if (file) showConfirmation(file);
 });
 
 fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
-  if (file) uploadFile(file);
+  if (file) showConfirmation(file);
 });
 
+// Boutons de confirmation
+transcribeBtn.addEventListener('click', () => {
+  if (selectedFile) {
+    uploadFile(selectedFile);
+  }
+});
+
+cancelBtn.addEventListener('click', () => {
+  resetInterface();
+});
+
+function showConfirmation(file) {
+  selectedFile = file;
+  
+  // Afficher les informations du fichier
+  fileName.textContent = file.name;
+  fileSize.textContent = formatFileSize(file.size);
+  
+  // Masquer la zone de drop et afficher la confirmation
+  drop.classList.add('hidden');
+  confirmSection.classList.remove('hidden');
+  progressWrap.classList.add('hidden');
+}
+
+function resetInterface() {
+  selectedFile = null;
+  fileInput.value = '';
+  
+  // Réafficher la zone de drop
+  drop.classList.remove('hidden');
+  confirmSection.classList.add('hidden');
+  progressWrap.classList.add('hidden');
+  downloadSection.style.display = 'none';
+}
+
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
 function uploadFile(file) {
+  // Masquer la section de confirmation et afficher la progression
+  confirmSection.classList.add('hidden');
   progressWrap.classList.remove('hidden');
+  
   statusText.textContent = "📤 Upload en cours...";
   fill.style.width = '0%';
   downloadSection.style.display = 'none';

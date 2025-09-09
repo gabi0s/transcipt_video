@@ -215,26 +215,206 @@ select:focus, input[type="text"]:focus {
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
+/* Section de confirmation */
+.confirm-section {
+    margin: 20px 0;
+    padding: 25px;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fichier sélectionné */
+.selected-file {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.file-icon {
+    font-size: 2.5em;
+    margin-right: 20px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.file-info {
+    flex: 1;
+}
+
+.file-name {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    word-break: break-all;
+}
+
+.file-size {
+    color: #6c757d;
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+/* Boutons de confirmation */
+.confirm-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.transcribe-btn, .cancel-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton Lancer la transcription */
+.transcribe-btn {
+    background: #3b82f6;
+    color: white;
+    border: 1px solid #2563eb;
+}
+
+.transcribe-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+}
+
+.transcribe-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+/* Bouton Annuler */
+.cancel-btn {
+    background: #6b7280;
+    color: white;
+    border: 1px solid #4b5563;
+}
+
+.cancel-btn:hover {
+    background: #4b5563;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(107, 114, 128, 0.2);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(107, 114, 128, 0.2);
+}
+
+/* Effet de ripple sur les boutons */
+.transcribe-btn::before, .cancel-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+}
+
+.transcribe-btn:active::before, .cancel-btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Animation de chargement sur le bouton transcription */
+.transcribe-btn.loading {
+    background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.transcribe-btn.loading::after {
+    content: '⏳';
+    margin-left: 10px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @media (max-width: 600px) {
     .container {
-    margin: 10px;
-    padding: 20px;
+        margin: 10px;
+        padding: 20px;
     }
     
     h1 {
-    font-size: 2rem;
+        font-size: 2rem;
     }
     
     .controls {
-    flex-direction: column;
-    align-items: stretch;
+        flex-direction: column;
+        align-items: stretch;
     }
     
     .control-group {
-    max-width: none;
+        max-width: none;
     }
     
     .drop-zone {
-    padding: 40px 20px;
+        padding: 40px 20px;
     }
+
+    /* Style pour mobile - boutons */
+    .confirm-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .transcribe-btn, .cancel-btn {
+        width: 100%;
+        max-width: 300px;
+        min-width: unset;
+    }
+    
+    .selected-file {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .file-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+/* Classe utilitaire */
+.hidden {
+    display: none !important;
 }
