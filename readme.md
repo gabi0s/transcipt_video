@@ -1,7 +1,8 @@
 #  Transcripteur Vidéo/Audio
 
 ## Description
-Un outil puissant pour transcrire des vidéos et fichiers audio en texte, avec support des fichiers locaux. Génère des transcriptions en format TXT et/ou SRT.
+Outil pour transcrire des vidéos et fichiers audio en texte, avec support des fichiers locaux et, si souhaité, de liens YouTube. Génère des transcriptions au format TXT et/ou SRT.
+L’exécution est prévue sur CPU (pas de GPU requis) via faster-whisper en compute_type=int8.
 
 ## Fonctionnalités
 *   **🎯 Support multiple** : Fichiers locaux (MP4, MKV, MOV, AVI, MP3, WAV, M4A, FLAC, WEBM)
@@ -13,16 +14,38 @@ Un outil puissant pour transcrire des vidéos et fichiers audio en texte, avec s
 
 ## Installation
 
+## Windows (recommandé)
+
+Double-cliquer sur run_server.bat.
+Ce script :
+
+1. crée/active un environnement virtuel venv,
+
+2. installe les dépendances Python nécessaires (CPU),
+
+3. vérifie la présence de FFmpeg dans le PATH,
+
+4. lance l’application Flask.
+
+## macOS / Linux
+```bash
+chmod +x install.sh
+./install.sh
+python app.py
+```
+
 ### Prérequis
 *   Python 3.8+
 *   FFmpeg (à installer et à mettre /bin dans les variables d'environement) (https://www.ffmpeg.org/download.html)
 
 ### Dépendances
+Si vous préférez passer par un fichier de dépendances :
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Lancer l'application
+clicker sur le fichier .bat ```run_server.bat```
 ```bash
 python app.py
 ```
