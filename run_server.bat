@@ -1,72 +1,51 @@
 @echo off
-echo ==========================================
-echo    SERVEUR DE TRANSCRIPTION AUDIO/VIDEO
-echo ==========================================
-echo.
+setlocal EnableExtensions
 
-REM Verification de Python
-python --version >nul 2>&1
-if errorlevel 1 (
-    echo ERREUR: Python n'est pas installe ou pas dans le PATH
-    echo Installez Python depuis https://python.org
-    pause
+echo ===============================================
+echo   Transcripteur - Installation et Lancement
+echo ===============================================
+
+REM 1) Détection de Python
+where python >nul 2>nul
+if %ERRORLEVEL% EQU 0 (
+  set "PY=python"
+) else (
+  where python3 >nul 2>nul
+  if %ERRORLEVEL% EQU 0 (
+    set "PY=python3"
+  ) else (
+    echo [ERREUR] Python non trouve. Installe Python puis relance ce script.
     exit /b 1
+  )
 )
 
-REM Creation de l'environnement virtuel si necessaire
+REM 2) Création/activation du venv
 if not exist "venv" (
-    echo Creation de l'environnement virtuel...
-    python -m venv venv
-    if errorlevel 1 (
-        echo ERREUR: Impossible de creer l'environnement virtuel
-        pause
-        exit /b 1
-    )
+  echo [INFO] Creation de l'environnement virtuel...
+  %PY% -m venv venv
+)
+call "venv\Scripts\activate.bat"
+
+REM 3) Installation des dependances
+echo [INFO] Mise a jour de pip / wheel / setuptools...
+python -m pip install --upgrade pip wheel setuptools
+
+echo [INFO] Installation des dependances Python...
+REM plus leger et suffisant pour CPU
+python -m pip install faster-whisper ffmpeg-python yt-dlp tqdm flask
+
+REM 4) Verification FFmpeg (optionnel mais recommande)
+where ffmpeg >nul 2>nul
+if %ERRORLEVEL% NEQ 0 (
+  echo [ATTENTION] FFmpeg n'est pas dans le PATH. Installe-le ou ajoute-le au PATH.
+  echo            Telechargement: https://ffmpeg.org/download.html
 )
 
-REM Activation de l'environnement virtuel
-echo Activation de l'environnement virtuel...
-call venv\Scripts\activate.bat
-if errorlevel 1 (
-    echo ERREUR: Impossible d'activer l'environnement virtuel
-    pause
-    exit /b 1
-)
-
-REM Installation des dependances
-echo Installation des dependances...
-pip install -r requirements.txt
-if errorlevel 1 (
-    echo ERREUR: Impossible d'installer les dependances
-    pause
-    exit /b 1
-)
-
-REM Creation des dossiers necessaires
-if not exist "templates" mkdir templates
-if not exist "uploads" mkdir uploads
-if not exist "sorties" mkdir sorties
-
-REM Copie du fichier HTML dans templates si necessaire
-if not exist "templates\index.html" (
-    echo ATTENTION: Copiez votre fichier index.html dans le dossier templates/
-    echo Le serveur va demarrer mais l'interface ne sera pas disponible
-    echo.
-)
-
-REM Demarrage du serveur
 echo.
-echo ==========================================
-echo    DEMARRAGE DU SERVEUR...
-echo ==========================================
-echo Interface web disponible sur: http://localhost:5000
-echo Appuyez sur Ctrl+C pour arreter le serveur
-echo.
-
+echo ===============================================
+echo   Lancement du serveur (Flask)
+echo   URL: http://localhost:5000
+echo ===============================================
 python app.py
 
-echo.
-echo ==========================================
-echo    SERVEUR ARRETE
-echo ==========================================
-pause
+endlocal
